@@ -20,21 +20,21 @@ export type Body =
   | Blob;
 
 export interface HttpMetadata {
-  contentType?: string;
-  contentLanguage?: string;
-  contentDisposition?: string;
-  contentEncoding?: string;
-  cacheControl?: string;
-  cacheExpiry?: Date;
+  readonly contentType?: string;
+  readonly contentLanguage?: string;
+  readonly contentDisposition?: string;
+  readonly contentEncoding?: string;
+  readonly cacheControl?: string;
+  readonly cacheExpiry?: Date;
 }
 
 export interface ObjectMeta {
-  key: string;
-  size: number;
-  etag: string;
-  uploaded?: Date;
-  httpMetadata?: HttpMetadata;
-  customMetadata?: Record<string, string>;
+  readonly key: string;
+  readonly size: number;
+  readonly etag: string;
+  readonly uploaded?: Date;
+  readonly httpMetadata?: HttpMetadata;
+  readonly customMetadata?: Record<string, string>;
 }
 
 export interface StoredObject extends ObjectMeta {
@@ -50,36 +50,36 @@ export interface StoredObject extends ObjectMeta {
  * enforces the ETag conditions; the R2 adapter forwards the whole object.
  */
 export interface WriteCondition {
-  etagMatches?: string;
-  etagDoesNotMatch?: string;
-  uploadedBefore?: Date;
-  uploadedAfter?: Date;
+  readonly etagMatches?: string;
+  readonly etagDoesNotMatch?: string;
+  readonly uploadedBefore?: Date;
+  readonly uploadedAfter?: Date;
 }
 
 export interface PutOptions {
-  httpMetadata?: HttpMetadata;
-  customMetadata?: Record<string, string>;
-  onlyIf?: WriteCondition;
+  readonly httpMetadata?: HttpMetadata;
+  readonly customMetadata?: Record<string, string>;
+  readonly onlyIf?: WriteCondition;
 }
 
 export type ListInclude = "httpMetadata" | "customMetadata";
 
 export interface ListOptions {
   /** Only keys beginning with this string. */
-  prefix?: string;
+  readonly prefix?: string;
   /** Opaque cursor returned by a previous call. */
-  cursor?: string;
+  readonly cursor?: string;
   /** Maximum keys to return. Defaults to 1000. */
-  limit?: number;
+  readonly limit?: number;
   /** Metadata to include in the returned objects. */
-  include?: readonly ListInclude[];
+  readonly include?: readonly ListInclude[];
 }
 
 export interface ListPage {
-  objects: ObjectMeta[];
-  truncated: boolean;
+  readonly objects: readonly ObjectMeta[];
+  readonly truncated: boolean;
   /** Pass to the next call when `truncated` is true. */
-  cursor?: string;
+  readonly cursor?: string;
 }
 
 export interface ObjectStore {

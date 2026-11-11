@@ -24,7 +24,7 @@ export interface OverlayOptions {
    *
    * @default ".overlay"
    */
-  readonly metaPrefix?: string;
+  readonly metadataPrefix?: string;
 }
 
 const listAll = (
@@ -62,16 +62,16 @@ const asStoreError = (
 export function overlay(options: OverlayOptions): ObjectStore {
   const layers = options.layers;
   const top = layers[0];
-  const metaPrefix = normalizePrefix(options.metaPrefix ?? ".overlay");
+  const metadataPrefix = normalizePrefix(options.metadataPrefix ?? ".overlay");
 
-  if (!metaPrefix) {
-    throw new Error("metaPrefix must not be empty");
+  if (!metadataPrefix) {
+    throw new Error("metadataPrefix must not be empty");
   }
 
-  const tombstonePrefix = joinKey(metaPrefix, "tombstones");
+  const tombstonePrefix = joinKey(metadataPrefix, "tombstones");
   const tombstoneKey = (key: string) => joinKey(tombstonePrefix, key);
   const isMetaKey = (key: string) =>
-    key === metaPrefix || key.startsWith(`${metaPrefix}/`);
+    key === metadataPrefix || key.startsWith(`${metadataPrefix}/`);
 
   const getAt = (
     index: number,

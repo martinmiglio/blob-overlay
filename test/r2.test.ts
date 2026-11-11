@@ -2,13 +2,8 @@ import * as Effect from "effect/Effect";
 import { Miniflare } from "miniflare";
 import { afterAll, beforeAll } from "vitest";
 
-import {
-  ObjectStoreError,
-  overlay,
-  r2,
-  withPrefix,
-  type R2BucketLike,
-} from "../src/index";
+import { ObjectStoreError, overlay, withPrefix } from "../src/index.js";
+import { r2, type R2BucketLike } from "../src/r2.js";
 import { overlayStories, type LayeredStores } from "./stories";
 
 let mf: Miniflare;

@@ -9,18 +9,19 @@ overlay: object stores have no symlinks or snapshots.
 ## Install
 
 ```sh
-bun add blob-overlay effect
+bun add github:martinmiglio/blob-overlay#v0.1.0 effect
 ```
 
-`effect` is a peer dependency (v4).
+`effect` is a peer dependency (v4). The package ships TypeScript source, so it
+runs under Bun or any bundler (Vite, Workers, tsc).
 
 ## Usage
 
 ```ts
 import * as Effect from "effect/Effect";
 
-import { overlay, readText, withPrefix } from "blob-overlay";
-import { r2 } from "blob-overlay/r2";
+import { overlay, readText, withPrefix } from "@martinmiglio/blob-overlay";
+import { r2 } from "@martinmiglio/blob-overlay/r2";
 
 const media = overlay({
   layers: [
@@ -48,18 +49,18 @@ Layers are ordered highest precedence first. Only the first layer is written to.
 
 ## Semantics
 
-| Operation           | Behaviour                                                         |
-| ------------------- | ----------------------------------------------------------------- |
-| `get` / `head`      | First layer with the key wins. A tombstone stops the search.       |
-| `put`               | Writes the first layer and clears any tombstone for that key.      |
-| `delete`            | Writes a tombstone in the first layer, then removes the overlay key. |
-| `list`              | Merges layers, keeps the highest copy, hides tombstoned keys.      |
+| Operation      | Behaviour                                                          |
+| -------------- | ------------------------------------------------------------------ |
+| `get` / `head` | First layer with the key wins. A tombstone stops the search.        |
+| `put`          | Writes the first layer and clears any tombstone for that key.       |
+| `delete`       | Writes a tombstone in the first layer, then removes the overlay key. |
+| `list`         | Merges layers, keeps the highest copy, hides tombstoned keys.       |
 
 ## API
 
-- `overlay({ layers, metaPrefix? })` — build a layered store.
+- `overlay({ layers, metadataPrefix? })` — build a layered store.
 - `withPrefix(store, prefix)` — mount a store under a transparent prefix.
-- `r2(bucket)` — R2 adapter (`blob-overlay/r2`).
+- `r2(bucket)` — R2 adapter (`@martinmiglio/blob-overlay/r2`).
 - `memoryStore({ initial? })` — in-memory adapter for tests.
 - `readBytes(object)` / `readText(object)` — consume a stored body.
 - `ObjectStore`, `ObjectStoreError`, `PreconditionFailed`.
@@ -70,8 +71,8 @@ Wrap the store in your own `Context.Service` when wiring it into an Effect app.
 
 - Reads are live, not a snapshot. New base objects appear in existing overlays.
 - `list` reads every matching key from every layer and merges in memory.
-- `.overlay/tombstones/` is reserved in the writable layer. Use `metaPrefix` to
-  change it.
+- `.overlay/tombstones/` is reserved in the writable layer. Use `metadataPrefix`
+  to change it.
 - No cascade delete or partial object updates.
 
 ## Development

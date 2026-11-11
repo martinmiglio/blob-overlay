@@ -1,25 +1,35 @@
 {
-  "name": "blob-overlay",
-  "version": "0.0.0",
+  "name": "@martinmiglio/blob-overlay",
+  "version": "0.1.0",
   "description": "Layered object storage for preview environments.",
   "license": "MIT",
   "author": "Martin Miglio",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/martinmiglio/blob-overlay.git"
+  },
+  "homepage": "https://github.com/martinmiglio/blob-overlay#readme",
+  "bugs": {
+    "url": "https://github.com/martinmiglio/blob-overlay/issues"
+  },
   "type": "module",
   "sideEffects": false,
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./src/index.ts",
+      "import": "./src/index.ts",
+      "default": "./src/index.ts"
     },
     "./r2": {
-      "types": "./dist/r2.d.ts",
-      "import": "./dist/r2.js"
+      "types": "./src/r2.ts",
+      "import": "./src/r2.ts",
+      "default": "./src/r2.ts"
     }
   },
   "files": [
-    "dist",
+    "src",
     "README.md",
     "LICENSE"
   ],
@@ -36,7 +46,8 @@
     "object-storage",
     "overlay",
     "copy-on-write",
-    "preview-environments"
+    "preview-environments",
+    "effect"
   ],
   "peerDependencies": {
     "effect": "^4.1.2"
