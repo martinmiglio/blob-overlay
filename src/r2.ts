@@ -10,7 +10,6 @@ import {
   type ListOptions,
   type ObjectMeta,
   type ObjectStore,
-  type PutOptions,
   type StoredObject,
 } from "./types.js";
 
@@ -32,20 +31,18 @@ export interface R2ObjectBodyLike extends R2ObjectLike {
 }
 
 export interface R2BucketLike {
-  get(key: string): Promise<R2ObjectBodyLike | null>;
-  head(key: string): Promise<R2ObjectLike | null>;
+  get(
+    key: string,
+    options?: unknown,
+  ): Promise<R2ObjectLike | R2ObjectBodyLike | null>;
+  head(key: string, options?: unknown): Promise<R2ObjectLike | null>;
   put(
     key: string,
     value: unknown,
-    options?: PutOptions,
+    options?: unknown,
   ): Promise<R2ObjectLike | null>;
-  delete(key: string): Promise<void>;
-  list(options?: {
-    prefix?: string;
-    cursor?: string;
-    limit?: number;
-    include?: ReadonlyArray<"httpMetadata" | "customMetadata">;
-  }): Promise<{
+  delete(key: string | string[]): Promise<void>;
+  list(options?: unknown): Promise<{
     objects: R2ObjectLike[];
     truncated: boolean;
     cursor?: string;
@@ -92,6 +89,15 @@ export function r2(bucket: R2BucketLike): ObjectStore {
         const key = yield* normalize("get", rawKey);
         const object = yield* attempt("get", key, () => bucket.get(key));
         if (!object) return null;
+        if (!("body" in object)) {
+          return yield* Effect.fail(
+            new ObjectStoreError({
+              operation: "get",
+              key,
+              cause: new Error("R2 get returned an object without a body"),
+            }),
+          );
+        }
 
         return {
           ...toMeta(object, key),

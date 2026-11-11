@@ -1,9 +1,11 @@
 {
   "name": "blob-overlay",
   "version": "0.0.0",
-  "description": "Layered, copy-on-write-style object storage. Branch an R2 bucket per environment without copying a byte.",
+  "description": "Layered object storage for preview environments.",
   "license": "MIT",
+  "author": "Martin Miglio",
   "type": "module",
+  "sideEffects": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
@@ -40,6 +42,7 @@
     "effect": "^4.1.2"
   },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261110.1",
     "@effect/vitest": "4.1.2",
     "@types/node": "^26.6.6",
     "effect": "4.1.2",
