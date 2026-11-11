@@ -67,12 +67,20 @@ Layers are ordered highest precedence first. Only the first layer is written to.
 
 Wrap the store in your own `Context.Service` when wiring it into an Effect app.
 
+## Concurrency and cursors
+
+- Writes are last-writer-wins. R2 is strongly consistent. `onlyIf` is forwarded
+  on `put`; the in-memory adapter enforces the ETag conditions itself.
+- Cursors are opaque and only valid for the same store, prefix, and options that
+  produced them.
+
 ## Limits
 
 - Reads are live, not a snapshot. New base objects appear in existing overlays.
 - `list` reads every matching key from every layer and merges in memory.
 - `.overlay/tombstones/` is reserved in the writable layer. Use `metadataPrefix`
-  to change it.
+  to change it; every key under that prefix is reserved. `withPrefix` does not
+  keep application keys out of that namespace.
 - No cascade delete or partial object updates.
 
 ## Development
