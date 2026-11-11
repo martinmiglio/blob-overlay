@@ -13,7 +13,7 @@ bun add github:martinmiglio/blob-overlay#v0.1.0 effect
 ```
 
 `effect` is a peer dependency (v4). The package ships TypeScript source, so it
-runs under Bun or any bundler (Vite, Workers, tsc).
+needs a bundler or a TypeScript runtime (Bun, Vite, Workers, tsx).
 
 ## Usage
 
